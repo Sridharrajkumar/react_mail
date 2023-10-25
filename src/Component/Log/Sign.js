@@ -73,9 +73,8 @@ const Sign = () => {
                 if (data.error)
                 {
                     setErr(data.error.message)
-                    
-                    }
                 }
+            }
         }
 
         
