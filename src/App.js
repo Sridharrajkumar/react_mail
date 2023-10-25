@@ -1,11 +1,18 @@
-import { Fragment } from 'react';
+
 import Sign from './Component/Log/Sign';
+import MNav from './Component/Nav/MNav';
+import { Routes, Route } from 'react-router-dom';
+import Home from './Component/Pages/Home';
 
 function App() {
   return (
-    <Fragment>
-       <Sign />
-    </Fragment>
+    <div>
+       <MNav/>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/sign" element={<Sign />} />
+       </Routes>
+    </div>
   );
 }
 
