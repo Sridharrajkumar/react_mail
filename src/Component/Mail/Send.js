@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState , useEffect} from 'react'
 import { Card, CardBody } from 'react-bootstrap';
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
 
-const Inbox = () => {
-
-    const user = useSelector(state => state.Auth.userId)
+const Send = () => {
+    const user = useSelector(state => state.Auth.userId);
     const [mails, setMails] = useState([]);
 
     useEffect(() => {
@@ -16,7 +15,7 @@ const Inbox = () => {
             let mail = []
             for (let key in data) 
             {
-                if (user === data[key].to)
+                if (user === data[key].from)
                 {
                     mail.push(data[key]);
                 }
@@ -31,13 +30,12 @@ const Inbox = () => {
 
 
   return (
-      <div>
           <Card>
               <CardBody>
                 <ul>
                 {mails.map((item, index) => (
                     <li key={index} className='d-flex justify-content-between ' style={{ borderBottom: '1px solid black' }}>
-                        <h6>From: {item.from}</h6>
+                        <h6>to: {item.to}</h6>
                         <h6>{item.title}</h6>
                         <h6>{item.message}</h6>
                     </li>
@@ -45,9 +43,7 @@ const Inbox = () => {
                 </ul>
               </CardBody>
           </Card>
-     </div>
   )
 }
 
-export default Inbox
-
+export default Send

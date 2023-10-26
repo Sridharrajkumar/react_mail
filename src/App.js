@@ -7,6 +7,7 @@ import Compose from './Component/Mail/Compose';
 import { useSelector } from 'react-redux';
 import SideNav from './Component/Nav/SideNav';
 import Inbox from './Component/Mail/Inbox';
+import Send from './Component/Mail/Send';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
         { !loggedIn && <Route path="/sign" element={<Sign />} />}
         {loggedIn && <Route path='/Compose' element={<Compose />} />}
         {loggedIn && <Route path='/inbox' element={<Inbox />} />}
+        {loggedIn && <Route path='/send' element={<Send />} />}
         {!loggedIn && <Route path='*' element={<Sign />}/>}
       </Routes>
       
