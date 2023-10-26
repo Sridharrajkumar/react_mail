@@ -2,6 +2,8 @@ import React, { useRef, useState } from 'react'
 import {  Card } from 'react-bootstrap/esm'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { AuthActions } from '../../Store/AuthReducer';
 
 
 const Sign = () => {
@@ -12,6 +14,8 @@ const Sign = () => {
     const [err, setErr] = useState();
     const [loggedIn, setloggedIn] = useState(true);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
 
     const SwitchHandler = () => {
         setloggedIn(!loggedIn);
@@ -19,9 +23,8 @@ const Sign = () => {
 
     const SubmitHandler = async(e) => {
         e.preventDefault();
-
         const email = emailRef.current.value;
-        const pass = emailRef.current.value;
+        const pass = passRef.current.value;
 
         if (!loggedIn)
         {
@@ -37,6 +40,7 @@ const Sign = () => {
             const data = await response.json();
             if (response.ok) {
                 console.log('user signup successfully');
+                
                 emailRef.current.value = null;
                 passRef.current.value = null;
                 conpass.current.value = null;
@@ -63,9 +67,9 @@ const Sign = () => {
 
             if (response.ok)
             {
+                dispatch(AuthActions.logIn({token: data.idToken,user: email}));
                 emailRef.current.value = null;
                 passRef.current.value = null;
-                localStorage.setItem('userToken', data.idToken);
                 navigate('/', { replace: true });
             }
             else

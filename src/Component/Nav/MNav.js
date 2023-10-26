@@ -1,9 +1,20 @@
 import React from 'react'
 
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { AuthActions } from '../../Store/AuthReducer';
 
 const MNav = () => {
+
+  const loggedIn = useSelector(state => state.Auth.isLogged);
+  const dispatch = useDispatch();
+
+  const LogOutHandler = () => {
+    dispatch(AuthActions.logOut());
+  }
+
+
   return (
     <>
     <Navbar expand='sm' bg='dark' variant='dark'>
@@ -12,12 +23,12 @@ const MNav = () => {
             <h3>Mail Box</h3>
         </Navbar.Brand>
         <Nav>
-          <Nav.Link as={NavLink}  to='/'><h5>Home</h5></Nav.Link>
-          <Nav.Link as={NavLink} to='/'><h5>About</h5></Nav.Link>
-          <Nav.Link as={NavLink} to='/'><h5>Contact</h5></Nav.Link>
+          {loggedIn && <Nav.Link as={NavLink}  to='/'><h5>Home</h5></Nav.Link>}
+          {loggedIn && <Nav.Link as={NavLink} to='/'><h5>About</h5></Nav.Link>}
+          {loggedIn && <Nav.Link as={NavLink} to='/'><h5>Contact</h5></Nav.Link>}
         </Nav>
         <div className='d-flex gap-2'>
-          <Button as={NavLink} to='/sign'>LogOut</Button>
+          {loggedIn ? <Button onClick={LogOutHandler}>LogOut</Button> : <Button as={NavLink} to='/sign'>LogIn</Button>}
         </div>
      </Container>
     </Navbar>

@@ -3,6 +3,8 @@ import { Button, Card, Container } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { EditorState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
+import { useSelector } from 'react-redux'
+
 
 const Compose = () => {
 
@@ -11,6 +13,8 @@ const Compose = () => {
   );
   const emailRef = useRef();
   const titleRef = useRef();
+  const sender = useSelector(state => state.Auth.userId);
+
 
   const submitHandler = async(e) => {
     e.preventDefault()
@@ -19,10 +23,15 @@ const Compose = () => {
     let title = titleRef.current.value;
     let mail = email.replace(/[@.]/g, '');
     const message = editorState.getCurrentContent().getPlainText();
-    const response = await fetch(`https://react-mail-fa2e5-default-rtdb.firebaseio.com/sendto/${mail}.json`, {
+    const response = await fetch(`https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail.json`, {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify({ email, title, message })  
+      body: JSON.stringify({ 
+        from:sender,
+        to: email,
+        title,
+        message
+      })  
     });
     if(response.ok)
     {
