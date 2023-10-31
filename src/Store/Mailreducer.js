@@ -26,7 +26,20 @@ const MailSlice = createSlice({
         },
         settotal(state)
         {
-            state.totalQuantity = state.totalQuantity - 1;
+            if (state.totalQuantity === 0)
+            {
+                state.totalQuantity = 0;
+            }
+            else
+            {
+                state.totalQuantity = state.totalQuantity - 1;
+            }
+        },
+        removeMail(state, action)
+        {
+            state.mails = state.mails.filter((email) => {
+                return email.id !== action.payload
+            })
         }
 
     }

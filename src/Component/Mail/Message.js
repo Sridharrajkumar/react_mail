@@ -16,6 +16,18 @@ const Message = () => {
     navigate('/inbox', { replace: true });
   }
 
+  const DeleteHandler = async (id) => {
+    
+    const response = await fetch(`https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail/${id}.json`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        });
+    if (!response.ok) throw new Error('something wrong while deleting the mail');
+    console.log(id);
+    dispatch(MailActions.removeMail(id));
+    navigate('/inbox', { replace: true });
+  }
+
   useEffect(() => {
     if (mail)
     {
@@ -73,8 +85,9 @@ const Message = () => {
                </p>
             </div>
         </CardBody>
-        <CardFooter>
-          <Button className='btn btn-danger' style={{marginLeft:'50%'}} onClick={CloseHandler}>Close</Button>
+        <CardFooter style={{display:'flex', justifyContent:'center' ,gap :'12px'}}>
+          <Button className='btn btn-success' onClick={CloseHandler}>Close</Button>
+          <Button className='btn btn-danger' onClick={() => DeleteHandler(mail.id)}>Delete</Button>
         </CardFooter>
         </Card>
     </div>
