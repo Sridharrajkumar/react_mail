@@ -21,7 +21,7 @@ const Compose = () => {
     console.log('clicked');
     let email = emailRef.current.value;
     let title = titleRef.current.value;
-    let mail = email.replace(/[@.]/g, '');
+    // let mail = email.replace(/[@.]/g, '');
     const message = editorState.getCurrentContent().getPlainText();
     const response = await fetch(`https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail.json`, {
       method: 'POST',
@@ -30,7 +30,8 @@ const Compose = () => {
         from:sender,
         to: email,
         title,
-        message
+        message,
+        read:false
       })  
     });
     if(response.ok)

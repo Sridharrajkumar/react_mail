@@ -4,14 +4,17 @@ import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { AuthActions } from '../../Store/AuthReducer';
+import { MailActions } from '../../Store/Mailreducer';
 
 const MNav = () => {
 
   const loggedIn = useSelector(state => state.Auth.isLogged);
   const dispatch = useDispatch();
+  
 
   const LogOutHandler = () => {
     dispatch(AuthActions.logOut());
+    dispatch(MailActions.clearMail());
   }
 
 

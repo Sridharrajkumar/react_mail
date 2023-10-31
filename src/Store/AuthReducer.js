@@ -19,6 +19,7 @@ const AuthSlice = createSlice({
             state.isLogged = true;
             localStorage.setItem('token', token)
             localStorage.setItem('user', user)
+            localStorage.setItem('time', Date.now());
         },
         logOut: (state) => {
             state.token = null;
@@ -26,6 +27,7 @@ const AuthSlice = createSlice({
             state.isLogged = false;
             localStorage.removeItem('token')
             localStorage.removeItem('user')
+            localStorage.removeItem('time')
         }
     }
 })

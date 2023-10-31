@@ -15,6 +15,7 @@ const Sign = () => {
     const [loggedIn, setloggedIn] = useState(true);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    
 
 
     const SwitchHandler = () => {
@@ -40,7 +41,6 @@ const Sign = () => {
             const data = await response.json();
             if (response.ok) {
                 console.log('user signup successfully');
-                
                 emailRef.current.value = null;
                 passRef.current.value = null;
                 conpass.current.value = null;

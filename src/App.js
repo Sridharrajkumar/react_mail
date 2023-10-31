@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux';
 import SideNav from './Component/Nav/SideNav';
 import Inbox from './Component/Mail/Inbox';
 import Send from './Component/Mail/Send';
+import Checklogin from './Component/Log/Checklogin';
+import Message from './Component/Mail/Message';
 
 function App() {
 
@@ -16,6 +18,7 @@ function App() {
 
   return (
     <div>
+      {!loggedIn && <Checklogin />}
       <MNav />
       {loggedIn && <SideNav />}
       <Routes>
@@ -24,8 +27,10 @@ function App() {
         {loggedIn && <Route path='/Compose' element={<Compose />} />}
         {loggedIn && <Route path='/inbox' element={<Inbox />} />}
         {loggedIn && <Route path='/send' element={<Send />} />}
-        {!loggedIn && <Route path='*' element={<Sign />}/>}
+        {!loggedIn && <Route path='*' element={<Sign />} />}
+        {loggedIn && <Route path='/message/:indexId' element={<Message />} />}
       </Routes>
+
       
     </div>
   );

@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { Card, CardBody } from 'react-bootstrap';
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { Card, CardBody, Nav } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux'
+import { MailActions } from '../../Store/Mailreducer';
+import { FaRegSquare, FaTrash } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
+
 
 const Inbox = () => {
 
-    const user = useSelector(state => state.Auth.userId)
-    const [mails, setMails] = useState([]);
+    const user = useSelector(state => state.Auth.userId);
+    // const [mails, setMails] = useState([]);
+    const dispatch = useDispatch();
+    const mail = useSelector((state) => state.Mail.mails);
+    
 
     useEffect(() => {
         const fetchFun = async () => {
@@ -13,21 +20,30 @@ const Inbox = () => {
             const response = await fetch(`https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail.json`);
             if (!response.ok) throw new Error('HTTP error! status: ${response.status}');
             const data = await response.json();
-            let mail = []
-            for (let key in data) 
+
+            if (data)
             {
-                if (user === data[key].to)
-                {
-                    mail.push(data[key]);
-                }
+                const emailArray = Object.keys(data).map((key) => ({
+                    ...data[key], id: key,
+                    
+                }));
+
+                emailArray.map((mail) => {
+                    if (mail.to === user)
+                    {
+                        dispatch(MailActions.addMail(mail));
+                    }
+                })
             }
 
-            setMails(mail);
+            // console.log('api', apimails);
+            // setMails(mail);
+            // dispatch(MailActions.addMail(data[key]));
             console.log(mail);
         }
         fetchFun()
         
-    },[user])
+    },[dispatch])
 
 
   return (
@@ -35,11 +51,16 @@ const Inbox = () => {
           <Card>
               <CardBody>
                 <ul>
-                {mails.map((item, index) => (
-                    <li key={index} className='d-flex justify-content-between ' style={{ borderBottom: '1px solid black' }}>
-                        <h6>From: {item.from}</h6>
-                        <h6>{item.title}</h6>
-                        <h6>{item.message}</h6>
+                {mail.map((item, index) => (
+                    <li key={index}  style={{ marginLeft: "1rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", flex: 1 }}>
+                        <Nav.Link as={NavLink} to={`/message/${item.id}`} className='d-flex justify-content-between'> 
+                            <FaRegSquare style={item.read ? {} : {color:'blue', background:'blue',text:'bold'}}/>
+                            <h6 style={{ width: "14rem", marginLeft: "1rem" }}>From: {item.from}</h6>
+                            <h6 style={{ marginLeft: "8rem", fontSize: "1.2rem" }}>{item.title}</h6>
+                            <p style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", flex: 1 }}> {item.message}</p>
+                            <FaTrash />
+                        </Nav.Link>
+                        
                     </li>
                     ))}
                 </ul>
