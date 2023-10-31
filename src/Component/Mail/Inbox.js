@@ -22,46 +22,15 @@ const Inbox = () => {
         if (!response.ok) throw new Error('something wrong while deleting the mail');
         dispatch(MailActions.removeMail(id));
     }
+
+    const filterMail = mail.filter(mail => mail.to === user);
     
-
-    useEffect(() => {
-        const fetchFun = async () => {
-            
-            const response = await fetch(`https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail.json`);
-            if (!response.ok) throw new Error('HTTP error! status: ${response.status}');
-            const data = await response.json();
-
-            if (data)
-            {
-                const emailArray = Object.keys(data).map((key) => ({
-                    ...data[key], id: key,
-                    
-                }));
-
-                emailArray.map((mail) => {
-                    if (mail.to === user)
-                    {
-                        dispatch(MailActions.addMail(mail));
-                    }
-                })
-            }
-
-            // console.log('api', apimails);
-            // setMails(mail);
-            // dispatch(MailActions.addMail(data[key]));
-           // console.log(mail);
-        }
-        fetchFun()
-        
-    },[dispatch])
-
-
   return (
       <div>
           <Card>
               <CardBody>
                 <ul>
-                {mail.map((item, index) => (
+                {filterMail.map((item, index) => (
                     <li key={index} className='d-flex justify-content-between'  style={{ marginLeft: "1rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", flex: 1,borderBottom:'1px solid black', marginTop:'6px' }}>
                         <Nav.Link as={NavLink} to={`/message/${item.id}`} className='d-flex justify-content-between'> 
                             <FaRegSquare style={item.read ? {} : {color:'blue', background:'blue',text:'bold'}}/>

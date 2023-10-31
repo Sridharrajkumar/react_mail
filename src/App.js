@@ -10,6 +10,7 @@ import Inbox from './Component/Mail/Inbox';
 import Send from './Component/Mail/Send';
 import Checklogin from './Component/Log/Checklogin';
 import Message from './Component/Mail/Message';
+import GlobalMail from './Component/Mail/GlobalMail';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
 
   return (
     <div>
+      <GlobalMail />
       {!loggedIn && <Checklogin />}
       <MNav />
       {loggedIn && <SideNav />}

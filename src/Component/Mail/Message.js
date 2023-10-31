@@ -62,7 +62,7 @@ const Message = () => {
         <Card style={{ width: '80vw',margin:"auto",height:'80vh',backgroundColor:'#c7f9cc' }}>
           <CardBody className='mt-2'>
             <div className='mt-2 ' style={{borderBottom:'1px solid black'}}>
-            <b>From:  </b>
+            <b>Mail:  </b>
             <br />
             <span style={{margin:'2rem' }}>
               {mail.from}

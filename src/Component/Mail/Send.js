@@ -1,45 +1,33 @@
-import React, { useState , useEffect} from 'react'
-import { Card, CardBody } from 'react-bootstrap';
+import React from 'react'
+import { Card, CardBody, Nav } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 const Send = () => {
     const user = useSelector(state => state.Auth.userId);
-    const [mails, setMails] = useState([]);
+    const mails = useSelector(state => state.Mail.mails);
+    console.log(user);
+    console.log(mails);
 
-    useEffect(() => {
-        const fetchFun = async () => {
-            
-            const response = await fetch(`https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail.json`);
-            if (!response.ok) throw new Error('HTTP error! status: ${response.status}');
-            const data = await response.json();
-            let mail = []
-            for (let key in data) 
-            {
-                if (user === data[key].from)
-                {
-                    mail.push(data[key]);
-                }
-            }
+    const filteredMail = mails.filter((item) => item.from === user);
 
-            setMails(mail);
-            console.log(mail);
-        }
-        fetchFun()
-        
-    },[user])
+    console.log(filteredMail);
 
 
   return (
           <Card>
               <CardBody>
                 <ul>
-                {mails.map((item, index) => (
-                    <li key={index} className='d-flex justify-content-between ' style={{ borderBottom: '1px solid black' }}>
-                        <h6>to: {item.to}</h6>
-                        <h6>{item.title}</h6>
-                        <h6>{item.message}</h6>
+                {filteredMail.map((item, index) => (
+                    
+                    <li key={index} style={{ borderBottom: '1px solid black' }}>
+                        <Nav.Link as={NavLink} to={`/message/${item.id}`} className='d-flex justify-content-between ' >
+                            <h6>to: {item.to}</h6>
+                            <h6>{item.title}</h6>
+                            <h6>{item.message}</h6>
+                        </Nav.Link>
                     </li>
-                    ))}
+                ))}
                 </ul>
               </CardBody>
           </Card>
@@ -47,3 +35,4 @@ const Send = () => {
 }
 
 export default Send
+
