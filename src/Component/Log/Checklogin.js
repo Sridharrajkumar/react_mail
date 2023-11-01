@@ -26,7 +26,7 @@ const Checklogin = () => {
         }
         else
         {
-            dispatch(AuthActions.logIn({token: token,user: user}));
+            dispatch(AuthActions.logIn({ token: token,user: user}));
         }
         
     }

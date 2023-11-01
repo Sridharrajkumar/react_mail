@@ -23,6 +23,7 @@ const MailSlice = createSlice({
         clearMail(state)
         {
             state.mails = [];
+            state.totalQuantity = 0;
         },
         settotal(state)
         {

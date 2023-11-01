@@ -24,7 +24,7 @@ const Inbox = () => {
     }
 
     const filterMail = mail.filter(mail => mail.to === user);
-    
+
   return (
       <div>
           <Card>

@@ -19,7 +19,7 @@ function App() {
 
   return (
     <div>
-      <GlobalMail />
+      { loggedIn && <GlobalMail />}
       {!loggedIn && <Checklogin />}
       <MNav />
       {loggedIn && <SideNav />}
