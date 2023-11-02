@@ -1,10 +1,12 @@
 import {useEffect} from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { MailActions } from '../../Store/Mailreducer';
 
 const GlobalMail = () => {
 
     const dispatch = useDispatch();
+   // const mails = useSelector(state => state.Mail.mails);
+    const user = useSelector(state => state.Auth.userId);
 
     useEffect(() => {
 
@@ -16,12 +18,16 @@ const GlobalMail = () => {
 
             if (data)
             {
-                const emailArray = Object.keys(data).map((key) => ({
+                const emailArray = Object.keys(data).map((key) => ({ 
                     ...data[key], id: key,
                     
                 }));
                 emailArray.map((mail) => {
                     dispatch(MailActions.addMail(mail));
+                    if (mail.read===false && mail.to === user) {
+                        dispatch(MailActions.totalAdd());
+                    }
+                    
                 })
             }
 
@@ -31,6 +37,15 @@ const GlobalMail = () => {
            // console.log(mail);
         }
         fetchFun()
+
+        //console.log(mails);
+        console.log(user);
+        
+
+        
+       // console.log(filterMail);
+
+        
         
     },[dispatch])
 
@@ -38,3 +53,4 @@ const GlobalMail = () => {
 }
 
 export default GlobalMail
+

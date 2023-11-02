@@ -6,12 +6,12 @@ import { NavLink } from 'react-router-dom';
 const Send = () => {
     const user = useSelector(state => state.Auth.userId);
     const mails = useSelector(state => state.Mail.mails);
-    console.log(user);
-    console.log(mails);
+   // console.log(user);
+    //console.log(mails);
 
     const filteredMail = mails.filter((item) => item.from === user);
 
-    console.log(filteredMail);
+    //console.log(filteredMail);
 
 
   return (

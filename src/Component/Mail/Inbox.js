@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { MailActions } from '../../Store/Mailreducer';
 import { FaRegSquare, FaTrash } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
+import { DeleteMails, RerenderedMail } from '../../Store/FetchFun';
 
 
 const Inbox = () => {
@@ -12,18 +13,30 @@ const Inbox = () => {
     // const [mails, setMails] = useState([]);
     const dispatch = useDispatch();
     const mail = useSelector((state) => state.Mail.mails);
-
+    const url = 'https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail.json';
+    //console.log(mail);
     const DeleteHandler = async(id) => {
         
-        const response = await fetch(`https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail/${id}.json`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' }
-        });
-        if (!response.ok) throw new Error('something wrong while deleting the mail');
-        dispatch(MailActions.removeMail(id));
+        dispatch(DeleteMails(url, id));
+
     }
+    //console.log(mail);
+
+
+    // useEffect(() => {
+    //     if (initialval)
+    //     {
+    //         initialval = false;
+    //         return;
+    //     }
+    //     dispatch(RerenderedMail(url,user));
+    // },[])
 
     const filterMail = mail.filter(mail => mail.to === user);
+
+    
+
+   
 
   return (
       <div>
@@ -36,9 +49,9 @@ const Inbox = () => {
                             <FaRegSquare style={item.read ? {} : {color:'blue', background:'blue',text:'bold'}}/>
                             <h6 style={{ width: "14rem", marginLeft: "1rem" }}>From: {item.from}</h6>
                             <h6 style={{ marginLeft: "8rem", fontSize: "1.2rem" }}>{item.title}</h6>
-                            <p style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", flex: 1 }}> {item.message}</p>
+                            <p style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", flex: 1, marginLeft:'4px'}}> {item.message}</p>
                         </Nav.Link>
-                            <button onClick={() => DeleteHandler(item.id)}><FaTrash /></button>
+                            <button onClick={() => DeleteHandler(item.id)} style={{border: 0 }}><FaTrash /></button>
                         
                         
                     </li>

@@ -9,11 +9,11 @@ const Checklogin = () => {
     const dispatch = useDispatch();
 
     const user = localStorage.getItem('user');
-    console.log(user);
+   // console.log(user);
     const logIntime = localStorage.getItem('time');
-    console.log(logIntime);
+    //console.log(logIntime);
     const token = localStorage.getItem('token');
-    console.log(token);
+    //console.log(token);
 
    
 

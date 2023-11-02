@@ -3,7 +3,8 @@ import { Button, Card, Container } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { EditorState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { Postmail } from '../../Store/FetchFun'
 
 
 const Compose = () => {
@@ -14,6 +15,8 @@ const Compose = () => {
   const emailRef = useRef();
   const titleRef = useRef();
   const sender = useSelector(state => state.Auth.userId);
+  const dispatch = useDispatch();
+  const url = 'https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail.json';
 
 
   const submitHandler = async(e) => {
@@ -23,27 +26,47 @@ const Compose = () => {
     let title = titleRef.current.value;
     // let mail = email.replace(/[@.]/g, '');
     const message = editorState.getCurrentContent().getPlainText();
-    const response = await fetch(`https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail.json`, {
-      method: 'POST',
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify({ 
-        from:sender,
-        to: email,
-        title,
-        message,
-        read:false
-      })  
-    });
-    if(response.ok)
-    {
-      alert('mail send to storage');
+    
+    const data={ 
+      user:sender,
+      from:sender,
+      to: email,
+      title,
+      message,
+      read:false
+    }
+    
+    dispatch(Postmail(url, data));
+
+    alert('mail send to storage');
       emailRef.current.value = null;
       titleRef.current.value = null;
       setEditorState(EditorState.createEmpty()); 
-    }
-    else {
-      alert("Failed");
-    }
+    
+    // const response = await fetch(`https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail.json`, {
+    //   method: 'POST',
+    //   headers: { 'Content-type': 'application/json' },
+    //   body: JSON.stringify({ 
+    //     user:sender,
+    //     from:sender,
+    //     to: email,
+    //     title,
+    //     message,
+    //     read:false
+    //   })  
+    // });
+    // if(response.ok)
+    // {
+    //   alert('mail send to storage');
+    //   emailRef.current.value = null;
+    //   titleRef.current.value = null;
+    //   setEditorState(EditorState.createEmpty()); 
+    // }
+    // else {
+    //   alert("Failed");
+    // }
+    
+    
   }
 
 

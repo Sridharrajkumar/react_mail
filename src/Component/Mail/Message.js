@@ -1,31 +1,32 @@
 import React, { useEffect } from 'react'
-import { Button, Card, CardBody, CardFooter, Container } from 'react-bootstrap';
+import { Button, Card, CardBody, CardFooter } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom'
 import { MailActions } from '../../Store/Mailreducer';
+import { DeleteMails, PutMails } from '../../Store/FetchFun';
 
 const Message = () => {
 
   const params = useParams();
   const emails = useSelector(state => state.Mail.mails);
+  const user = useSelector(state => state.Auth.userId);
   const mail = emails.find((email) => email.id === params.indexId);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const url = 'https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail';
+  const putUrl=`https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail/${params.indexId}.json`
+
 
   const CloseHandler = () => {
+    dispatch(PutMails(putUrl,mail));
     navigate('/inbox', { replace: true });
   }
 
   const DeleteHandler = async (id) => {
     
-    const response = await fetch(`https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail/${id}.json`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' }
-        });
-    if (!response.ok) throw new Error('something wrong while deleting the mail');
-    console.log(id);
-    dispatch(MailActions.removeMail(id));
+    dispatch(DeleteMails(url, id));
     navigate('/inbox', { replace: true });
+
   }
 
   useEffect(() => {
@@ -33,7 +34,10 @@ const Message = () => {
     {
       const fetchFun = async () => {
         const updatemail = { ...mail, read: true };
-        dispatch(MailActions.settotal());
+        if (mail.from !== user)
+        {
+          dispatch(MailActions.settotal());
+        }
       const response = await fetch(`https://react-mail-fa2e5-default-rtdb.firebaseio.com/mail/${params.indexId}.json`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -58,7 +62,8 @@ const Message = () => {
   }
 
   return (
-    <div style={{marginTop:'6px'}}>
+    <>
+      <div style={{marginTop:'6px'}}>
         <Card style={{ width: '80vw',margin:"auto",height:'80vh',backgroundColor:'#c7f9cc' }}>
           <CardBody className='mt-2'>
             <div className='mt-2 ' style={{borderBottom:'1px solid black'}}>
@@ -91,6 +96,8 @@ const Message = () => {
         </CardFooter>
         </Card>
     </div>
+    </>
+   
   )
 }
 
